@@ -20,22 +20,22 @@ on:
         description: "Run GitHub Code Scanning"
         type: boolean
         required: false
-        default: true
+        default: false
       run_sonar:
         description: "Run Sonar Scan"
         type: boolean
         required: false
-        default: true
+        default: false
       publish_docker:
         description: "Publish Image to Docker Hub"
         type: boolean
         required: false
-        default: true
+        default: false
       publish_ghcr:
         description: "Publish Image to GitHub Registry"
         type: boolean
         required: false
-        default: true
+        default: false
     secrets:
       SONAR_TOKEN:
         required: true
