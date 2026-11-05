@@ -144,7 +144,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   build:
-    if: ${{ inputs.run_build }}
+    if: ${{ inputs.run_build && !failure() && !cancelled() }}
     name: Build Docker Image
     runs-on: ubuntu-latest
     needs: [unit-tests, analyze, sonarqube]
@@ -202,11 +202,11 @@ jobs:
       - name: Tag Image
         run: |
           IMAGE_TAG="${{ needs.build.outputs.image-tags }}"
-          docker image tag test-app:$IMAGE_TAG ${{ vars.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
+          docker image tag test-app:$IMAGE_TAG ${{ inputs.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
       - name: Push Image
         run: |
           IMAGE_TAG="${{ needs.build.outputs.image-tags }}"
-          docker image push ${{ vars.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
+          docker image push ${{ inputs.DOCKERHUB_USERNAME }}/test-app:$IMAGE_TAG
   publish-ghcr:
     if: ${{ inputs.publish_ghcr }}
     name: Publish Image to GitHub Container Registry
